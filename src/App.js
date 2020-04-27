@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./App.css";
+
+import { AppDiv, MainDiv, ButtonsDiv, TwitterAnchor } from "./AppStyles";
 
 const App = () => {
   // STATE
@@ -252,21 +253,24 @@ const App = () => {
     }
   }, [randomNum]);
 
-  console.log("All Quotes", allQuotes);
-  console.log("Quote", quote);
-  console.log("Random Num", randomNum);
-
   return (
-    <div id="quote-box">
-      <p id="text">{quote.text === null ? "DEFAULT" : quote.text}</p>
-      <p id="author">{quote.author === null ? "Unknown" : quote.author}</p>
-      <button id="new-quote" onClick={newQuote}>
-        New Quote
-      </button>
-      <a href="#" id="tweet-quote">
-        Twitter
-      </a>
-    </div>
+    <AppDiv>
+      <MainDiv id="quote-box">
+        <p id="text">{quote.text === null ? "DEFAULT" : quote.text}</p>
+        <p id="author">{quote.author === null ? "Unknown" : quote.author}</p>
+        <ButtonsDiv>
+          <button id="new-quote" onClick={newQuote}>
+            New Quote
+          </button>
+          <TwitterAnchor
+            href={`https://twitter.com/intent/tweet?hashtags=quotes&text="${quote.text}" -${quote.author}`}
+            id="tweet-quote"
+          >
+            Twitter
+          </TwitterAnchor>
+        </ButtonsDiv>
+      </MainDiv>
+    </AppDiv>
   );
 };
 
