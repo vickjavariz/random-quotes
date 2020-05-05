@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
-import { AppDiv, MainDiv, ButtonsDiv, TwitterAnchor } from "./AppStyles";
+import {
+  AppDivFunc,
+  MainDivFunc,
+  ButtonsDiv,
+  QuoteText,
+  QuoteSpan,
+  AuthorText,
+  NewQuoteButtonFunc,
+  TwitterAnchorFunc,
+} from "./AppStyles";
 
 const App = () => {
-  // STATE
+  // VARIABLES & STATE
   const backupData = [
     {
       text:
@@ -220,6 +232,29 @@ const App = () => {
     Math.floor(Math.random() * allQuotes.length)
   );
 
+  const colors = [
+    "#16a085",
+    "#27ae60",
+    "#2c3e50",
+    "#f39c12",
+    "#e74c3c",
+    "#9b59b6",
+    "#FB6964",
+    "#342224",
+    "#472E32",
+    "#BDBB99",
+    "#77B1A9",
+    "#73A857",
+  ];
+
+  const [color, setColor] = useState("#FB6964");
+
+  // STYLED COMPONENT FUNCTIONS
+  const AppDiv = AppDivFunc(color);
+  const MainDiv = MainDivFunc(color);
+  const NewQuoteButton = NewQuoteButtonFunc(color);
+  const TwitterAnchor = TwitterAnchorFunc(color);
+
   // FUNCTIONS
   const updateState = (res = backupData) => {
     setState({
@@ -234,6 +269,8 @@ const App = () => {
 
   const newQuote = () => {
     setRandomNum(Math.floor(Math.random() * allQuotes.length));
+
+    setColor(colors[Math.floor(Math.random() * colors.length)]);
   };
 
   // USEEFFECT
@@ -253,20 +290,27 @@ const App = () => {
     }
   }, [randomNum]);
 
+  // APP
   return (
     <AppDiv>
       <MainDiv id="quote-box">
-        <p id="text">{quote.text === null ? "DEFAULT" : quote.text}</p>
-        <p id="author">{quote.author === null ? "Unknown" : quote.author}</p>
+        <QuoteText id="text">
+          <FontAwesomeIcon icon={faQuoteLeft} />
+          <QuoteSpan>{quote.text === null ? "DEFAULT" : quote.text}</QuoteSpan>
+        </QuoteText>
+        <AuthorText id="author">
+          - {quote.author === null ? "Unknown" : quote.author}
+        </AuthorText>
         <ButtonsDiv>
-          <button id="new-quote" onClick={newQuote}>
+          <NewQuoteButton id="new-quote" onClick={newQuote}>
             New Quote
-          </button>
+          </NewQuoteButton>
           <TwitterAnchor
             href={`https://twitter.com/intent/tweet?hashtags=quotes&text="${quote.text}" -${quote.author}`}
+            target="_blank"
             id="tweet-quote"
           >
-            Twitter
+            <FontAwesomeIcon icon={faTwitter} />
           </TwitterAnchor>
         </ButtonsDiv>
       </MainDiv>
